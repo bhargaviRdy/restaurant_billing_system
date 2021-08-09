@@ -30,8 +30,8 @@ public class User implements Runnable {
 			e.printStackTrace();
 		}
 	}
+	
 	public void login() throws Exception {
-		
 		
 		System.out.println("Please enter name:  ");
 		this.name = scanner.nextLine();
@@ -82,7 +82,6 @@ public class User implements Runnable {
 		    System.out.println("");
 		}
 		
-		System.out.println("itemprice:  "+itemprice);
 		int item = scanner.nextInt();
 		int totalcost = 0;
 		while(item != 0) {
@@ -90,10 +89,11 @@ public class User implements Runnable {
 			item = scanner.nextInt();
 		}
 		
-		System.out.println("Your total bill is "+ totalcost+". Please pay the amout at the counter. Thank You");
-		
+		System.out.println("Your total bill is "+ totalcost+". Please pay the amout at the counter.");
+		logout();
 	}
 	public void logout() {
+		System.out.println("Thank You! See you soon :)");
 		return;
 	}
 

@@ -13,15 +13,29 @@ public class Main{
 		"1. As User"+"\n"+"2. As Admin");
 		
 		Scanner scanner = new Scanner(System.in);
-		int input = scanner.nextInt();
-		switch(input) {
-		case 1: User user = new User();
-			user.login();
-			break;
-		case 2 : Admin admin = new Admin();
-			admin.login();
-			break;
-		}
 		
+//		while(true) {/
+			int input = scanner.nextInt();
+			switch(input) {
+				case 1:
+					
+					User user = new User();
+					Thread userThread = new Thread(user);
+					synchronized(userThread) {
+						userThread.start();
+						userThread.interrupt();
+					}
+					break;
+				case 2 : 
+					Admin admin = new Admin();
+					Thread adminThread = new Thread(admin);
+					synchronized(adminThread) {
+						adminThread.start();
+						adminThread.interrupt();
+					}
+					break;
+			}
+//			input = scanner.nextInt();
+//		}
 	}
 }

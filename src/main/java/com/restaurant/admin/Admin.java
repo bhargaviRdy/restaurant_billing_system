@@ -1,12 +1,14 @@
 package com.restaurant.admin;
 
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
 import com.restaurant.sqlconnection.MySQLConnection;
 
-public class Admin {
+public class Admin implements Runnable{
 	
 	String name;
 	String password;
@@ -27,6 +29,7 @@ public class Admin {
 			System.out.println("login failed");
 			e.printStackTrace();
 		}
+		return;
 	}
 	public void login() throws Exception {
 		
@@ -53,21 +56,54 @@ public class Admin {
 		System.out.println("Choose any option: ");
 		System.out.println("1. Show the total sale of this month");
 		System.out.println("2. Show the bills for today");
+		System.out.println("0. To Logout");
 		int choose = scanner.nextInt();
-		switch(choose) {
-		case 1: totalSale();
-			break;
-		case 2: billsToday();
-			break;
+		while(choose!=0) {
+			switch(choose) {
+			case 1: totalSale();
+				break;
+			case 2: billsToday();
+				break;
+			case 0:
+				return;
+			}
+			System.out.println("Choose any option: ");
+			System.out.println("1. Show the total sale of this month");
+			System.out.println("2. Show the bills for today");
+			System.out.println("0. To Logout");
+			choose = scanner.nextInt();
 		}
 	}
 	
-	public void billsToday() {
+	public void billsToday() throws SQLException {
+		System.out.println("Today's bills: ");
+		String str = "select username, item, price from bills where date = curdate()";
+		ResultSet resultSet = statement.executeQuery(str);
+		ResultSetMetaData rsmd = resultSet.getMetaData();
+		int columns = rsmd.getColumnCount();
+		while (resultSet.next()) {
+		    for (int i = 1; i <= columns; i++) {
+		        if (i > 1) System.out.print(",  ");
+		        String columnValue = resultSet.getString(i);
+		        System.out.print(columnValue);
+		        
+		    }
+		    System.out.println("");
+		}
+	}
+	
+	public void totalSale() throws SQLException {
+		
+		String str = "select sum(price) from bills where monthname(date) = 'August'";
+		ResultSet resultSet = statement.executeQuery(str);
+		resultSet.next();
+		System.out.println("Total Sale for this month is : "+ resultSet.getString(1));
 		
 	}
 	
-	public void totalSale() {
-		
+	public void logout() {
+		System.out.println("Thank You! See you soon :)");
+		return;
 	}
 	
 
